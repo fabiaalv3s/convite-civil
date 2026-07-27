@@ -124,6 +124,12 @@ a {
   overflow: hidden;
 }
 
+.hero-picture {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
 .hero-media {
   position: absolute;
   inset: 0;

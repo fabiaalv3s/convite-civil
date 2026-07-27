@@ -3,6 +3,7 @@ import type { FormEvent } from 'react'
 import { Calendar, Clock, MapPin, Menu, X } from 'lucide-react'
 import './App.css'
 import landingBg from './assets/landing.jpeg'
+import landingCel from './assets/landing-cel.jpeg'
 
 function App() {
   const [nome, setNome] = useState('')
@@ -138,12 +139,15 @@ function App() {
       </div>
 
       <section id="home" className="hero">
-        <img
-          className="hero-media"
-          src={landingBg}
-          alt="Fábia Alves e Bruno Bertoni"
-          fetchPriority="high"
-        />
+        <picture className="hero-picture">
+          <source media="(max-width: 700px)" srcSet={landingCel} />
+          <img
+            className="hero-media"
+            src={landingBg}
+            alt="Fábia Alves e Bruno Bertoni"
+            fetchPriority="high"
+          />
+        </picture>
         <div className="hero-overlay" aria-hidden="true" />
         <div className="hero-content">
           <p className="hero-eyebrow animate-up">Casamento Civil</p>
