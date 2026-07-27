@@ -66,6 +66,23 @@ function App() {
     return () => { document.body.style.overflow = '' }
   }, [menuOpen])
 
+  useEffect(() => {
+    if (!menuOpen) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMenuOpen(false)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [menuOpen])
+
+  useEffect(() => {
+    const onResize = () => {
+      if (window.innerWidth > 700) setMenuOpen(false)
+    }
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [])
+
   const handleRSVP = (e: FormEvent) => {
     e.preventDefault()
 
@@ -84,9 +101,20 @@ function App() {
 
   const closeMenu = () => setMenuOpen(false)
 
+  const navItems = (
+    <>
+      <a href="#home" onClick={closeMenu}>Home</a>
+      <a href="#contagem" onClick={closeMenu}>O Casal</a>
+      <a href="#rsvp" onClick={closeMenu}>Confirme sua presença</a>
+    </>
+  )
+
   return (
     <>
       <nav className={`navbar${navScrolled ? ' scrolled' : ''}${menuOpen ? ' open' : ''}`}>
+        <div className="nav-links nav-links-desktop">
+          {navItems}
+        </div>
         <button
           type="button"
           className="nav-toggle"
@@ -96,15 +124,18 @@ function App() {
         >
           {menuOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
-
-        <div className="nav-links">
-          <a href="#home" onClick={closeMenu}>Home</a>
-          <a href="#contagem" onClick={closeMenu}>O Casal</a>
-          <a href="#rsvp" onClick={closeMenu}>Confirme sua presença</a>
-        </div>
       </nav>
 
-      {menuOpen && <div className="nav-backdrop" onClick={closeMenu} aria-hidden="true" />}
+      {/* Fora da navbar: backdrop-filter no scroll não prende o overlay */}
+      <div
+        className={`nav-drawer${menuOpen ? ' open' : ''}`}
+        onClick={closeMenu}
+        aria-hidden={!menuOpen}
+      >
+        <a href="#home" onClick={(e) => { e.stopPropagation(); closeMenu() }}>Home</a>
+        <a href="#contagem" onClick={(e) => { e.stopPropagation(); closeMenu() }}>O Casal</a>
+        <a href="#rsvp" onClick={(e) => { e.stopPropagation(); closeMenu() }}>Confirme sua presença</a>
+      </div>
 
       <section id="home" className="hero">
         <img

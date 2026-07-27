@@ -35,26 +35,44 @@ a {
   top: 0;
   left: 0;
   right: 0;
-  z-index: 100;
+  z-index: 110;
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: var(--nav-h);
   padding: 0 24px;
   background: transparent;
-  transition: background 0.35s ease, backdrop-filter 0.35s ease, box-shadow 0.35s ease;
+  transition: background 0.35s ease, box-shadow 0.35s ease;
 }
 
+/* Blur no ::before — não cria containing block p/ fixed filhos */
 .navbar.scrolled {
+  background: transparent;
+  box-shadow: 0 1px 0 var(--line);
+}
+
+.navbar.scrolled::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
   background: rgba(243, 241, 236, 0.88);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  box-shadow: 0 1px 0 var(--line);
+  pointer-events: none;
 }
 
 .navbar.scrolled .nav-links a,
 .navbar.scrolled .nav-toggle {
   color: var(--text);
+}
+
+.navbar.open .nav-toggle {
+  color: #fff;
+}
+
+.navbar.open.scrolled::before {
+  opacity: 0;
 }
 
 .nav-links {
@@ -63,7 +81,8 @@ a {
   gap: 2rem;
 }
 
-.nav-links a {
+.nav-links a,
+.nav-drawer a {
   color: #fff;
   text-decoration: none;
   font-size: 0.8rem;
@@ -73,7 +92,8 @@ a {
   transition: opacity 0.2s ease;
 }
 
-.nav-links a:hover {
+.nav-links a:hover,
+.nav-drawer a:hover {
   opacity: 0.7;
 }
 
@@ -84,10 +104,12 @@ a {
   color: #fff;
   cursor: pointer;
   padding: 8px;
-  z-index: 110;
+  z-index: 120;
+  position: relative;
 }
 
-.nav-backdrop {
+/* Drawer mobile — sibling da nav, sempre relativo ao viewport */
+.nav-drawer {
   display: none;
 }
 
@@ -429,15 +451,20 @@ a {
 
 /* ——— Mobile ——— */
 @media (max-width: 700px) {
+  .nav-links-desktop {
+    display: none;
+  }
+
   .nav-toggle {
     display: flex;
     margin-left: auto;
   }
 
-  .nav-links {
+  .nav-drawer {
+    display: flex;
     position: fixed;
     inset: 0;
-    z-index: 105;
+    z-index: 115;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -449,26 +476,16 @@ a {
     transition: opacity 0.3s ease, visibility 0.3s ease;
   }
 
-  .navbar.open .nav-links {
+  .nav-drawer.open {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
   }
 
-  .navbar.open .nav-toggle {
-    color: #fff;
-  }
-
-  .nav-links a {
+  .nav-drawer a {
     color: #fff;
     font-size: 1rem;
-  }
-
-  .nav-backdrop {
-    display: block;
-    position: fixed;
-    inset: 0;
-    z-index: 99;
+    padding: 12px 16px;
   }
 
   .hero-media {
