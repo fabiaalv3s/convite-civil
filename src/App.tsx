@@ -191,6 +191,11 @@ function App() {
           com um bom churrasco, carinho e muita alegria.
         </p>
 
+        <p className="intro-note">
+          Água, refrigerante e comida ficam por nossa conta.
+          Se quiser algo alcoólico, traga a sua favorita para celebrar conosco.
+        </p>
+
         <div className="details-row">
           <div className="detail-item">
             <Calendar size={22} strokeWidth={1.5} />
