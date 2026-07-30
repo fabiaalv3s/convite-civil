@@ -214,6 +214,9 @@ function App() {
 
       <section id="rsvp" className="rsvp-section">
         <h2 className="section-title">Confirme sua presença</h2>
+        <p className="rsvp-deadline">
+          Pedimos a gentileza de confirmar até o dia <strong>10 de agosto de 2026</strong>.
+        </p>
 
         <div className="rsvp-card">
           <form onSubmit={handleRSVP}>
